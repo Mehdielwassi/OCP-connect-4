@@ -10,11 +10,17 @@ const turnIndicatorEl = document.getElementById("turn-indicator");
 const turnTextEl = document.getElementById("turn-text");
 const messageEl = document.getElementById("message");
 
-// Modal elements
-const modalEl = document.getElementById("player-modal");
+// Intro / setup elements
+const introViewEl = document.getElementById("intro-view");
+const gameViewEl = document.getElementById("game-view");
 const p1Input = document.getElementById("p1-name");
 const p2Input = document.getElementById("p2-name");
+const p1ColorInput = document.getElementById("p1-color");
+const p2ColorInput = document.getElementById("p2-color");
+const p1Swatch = document.getElementById("p1-swatch");
+const p2Swatch = document.getElementById("p2-swatch");
 const startBtn = document.getElementById("start-game-btn");
+const colorWarningEl = document.getElementById("color-warning");
 
 // Game state
 let player1Name = "Player 1";
@@ -115,6 +121,37 @@ function resetHover() {
   hoverCells.forEach((cell) => {
     cell.classList.remove("active", "player1", "player2");
   });
+}
+
+function applyPlayerColorsFromInputs() {
+  if (!p1ColorInput || !p2ColorInput) return;
+  const rootStyle = document.documentElement.style;
+  const p1Color = p1ColorInput.value || "#008f4c";
+  const p2Color = p2ColorInput.value || "#00b894";
+  rootStyle.setProperty("--player1-color", p1Color);
+  rootStyle.setProperty("--player2-color", p2Color);
+}
+
+function validatePlayerColors() {
+  if (!p1ColorInput || !p2ColorInput || !startBtn || !colorWarningEl) return;
+  const same =
+    p1ColorInput.value.toLowerCase() === p2ColorInput.value.toLowerCase();
+  if (same) {
+    colorWarningEl.classList.remove("hidden");
+    startBtn.disabled = true;
+  } else {
+    colorWarningEl.classList.add("hidden");
+    startBtn.disabled = false;
+  }
+}
+
+function syncColorSwatches() {
+  if (p1Swatch && p1ColorInput) {
+    p1Swatch.style.backgroundColor = p1ColorInput.value;
+  }
+  if (p2Swatch && p2ColorInput) {
+    p2Swatch.style.backgroundColor = p2ColorInput.value;
+  }
 }
 
 // Main reset
@@ -346,15 +383,37 @@ function setupEvents() {
     resetGame();
   });
 
+  // Color picker and validation
+  if (p1ColorInput) {
+    p1ColorInput.addEventListener("input", () => {
+      syncColorSwatches();
+      validatePlayerColors();
+    });
+  }
+  if (p2ColorInput) {
+    p2ColorInput.addEventListener("input", () => {
+      syncColorSwatches();
+      validatePlayerColors();
+    });
+  }
+
   // Start game button
-  startBtn.addEventListener("click", () => {
-    const p1 = p1Input.value.trim();
-    const p2 = p2Input.value.trim();
-    if (p1) player1Name = p1;
-    if (p2) player2Name = p2;
-    modalEl.classList.add("hidden");
-    resetGame();
-  });
+  if (startBtn) {
+    startBtn.addEventListener("click", () => {
+      const p1 = p1Input.value.trim();
+      const p2 = p2Input.value.trim();
+
+      player1Name = p1 || "Player 1";
+      player2Name = p2 || "Player 2";
+
+      applyPlayerColorsFromInputs();
+
+      if (introViewEl) introViewEl.classList.add("hidden");
+      if (gameViewEl) gameViewEl.classList.remove("hidden");
+
+      resetGame();
+    });
+  }
 }
 
 // --- Confetti ---
@@ -362,9 +421,13 @@ function setupEvents() {
 function triggerConfetti(winningCells, player) {
   if (!window.confetti) return;
 
-  const colors = player === 1 
-    ? ["#008f4c", "#00b894", "#a6f4c5"] 
-    : ["#00b894", "#00c2a8", "#e5fffb"];
+  const styles = getComputedStyle(document.documentElement);
+  const p1Color = (styles.getPropertyValue("--player1-color") || "#008f4c").trim();
+  const p2Color = (styles.getPropertyValue("--player2-color") || "#00b894").trim();
+
+  const colors = player === 1
+    ? [p1Color, p2Color, "#a6f4c5"]
+    : [p2Color, p1Color, "#e5fffb"];
 
   // Calculate average position of winning cells
   let totalX = 0;
@@ -398,6 +461,7 @@ function triggerConfetti(winningCells, player) {
 createHoverRow();
 createBoard();
 setupEvents();
-// resetGame(); // Called by start button now, but we'll leave initial state behind modal
-resetGame(); 
+syncColorSwatches();
+validatePlayerColors();
+resetGame();
 updateTurnIndicator();

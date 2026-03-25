@@ -340,6 +340,13 @@ body {
   font-family: inherit;
 }
 
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
 .btn.primary {
   background: linear-gradient(135deg, var(--ocp-green), #00b894);
   color: #ffffff;
