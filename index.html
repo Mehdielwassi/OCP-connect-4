@@ -21,7 +21,60 @@
     </header>
 
     <main class="app-main">
-      <section class="game-card">
+      <!-- Intro Screen -->
+      <section id="intro-view" class="game-card intro-card">
+        <div class="intro-header">
+          <h1 class="game-title">Welcome to OCP Connect 4</h1>
+          <p class="game-subtitle">A modern twist on the classic game.</p>
+        </div>
+        
+        <p class="intro-text">
+          Drop your discs, outsmart your opponent, and be the first to connect four in a row. Good luck!
+        </p>
+
+        <div class="player-setup-grid">
+          <!-- Player 1 Setup -->
+          <div class="player-setup-col">
+            <h3 class="setup-heading">Player 1</h3>
+            <div class="input-group">
+              <label for="p1-name" class="input-label">Name</label>
+              <input type="text" id="p1-name" class="modal-input" placeholder="Player 1" />
+            </div>
+            <div class="color-picker-group">
+              <label class="input-label">Color</label>
+              <div class="color-swatch-wrapper">
+                <input type="color" id="p1-color" value="#008f4c" class="color-input" />
+                <div id="p1-swatch" class="color-swatch" style="background-color: #008f4c;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Player 2 Setup -->
+          <div class="player-setup-col">
+            <h3 class="setup-heading">Player 2</h3>
+            <div class="input-group">
+              <label for="p2-name" class="input-label">Name</label>
+              <input type="text" id="p2-name" class="modal-input" placeholder="Player 2" />
+            </div>
+            <div class="color-picker-group">
+              <label class="input-label">Color</label>
+              <div class="color-swatch-wrapper">
+                <input type="color" id="p2-color" value="#00b894" class="color-input" />
+                <div id="p2-swatch" class="color-swatch" style="background-color: #00b894;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="color-warning" class="warning-msg hidden">
+          Players can't have the same color.
+        </div>
+
+        <button id="start-game-btn" class="btn primary full-width">Start Game</button>
+      </section>
+
+      <!-- Game Board (Hidden Initially) -->
+      <section id="game-view" class="game-card hidden">
         <div class="game-header">
           <div class="game-title-group">
             <h1 class="game-title">Connect 4</h1>
@@ -55,22 +108,6 @@
     <footer class="app-footer">
       <span class="footer-text">Inspired by Groupe OCP · Clean green theme</span>
     </footer>
-  </div>
-
-  <!-- Player Name Modal -->
-  <div id="player-modal" class="modal-overlay">
-    <div class="modal-card">
-      <h2 class="modal-title">Enter Player Names</h2>
-      <div class="input-group">
-        <label for="p1-name" class="input-label">Player 1 (Green)</label>
-        <input type="text" id="p1-name" class="modal-input" placeholder="Player 1" />
-      </div>
-      <div class="input-group">
-        <label for="p2-name" class="input-label">Player 2 (Teal)</label>
-        <input type="text" id="p2-name" class="modal-input" placeholder="Player 2" />
-      </div>
-      <button id="start-game-btn" class="btn primary full-width">Start Game</button>
-    </div>
   </div>
 
   <script src="script.js"></script>

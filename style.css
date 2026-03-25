@@ -380,6 +380,11 @@ body {
   .game-card {
     padding: 12px 12px 14px;
   }
+  
+  .player-setup-grid {
+    flex-direction: column;
+    gap: 12px;
+  }
 
   .game-header {
     flex-direction: column;
@@ -424,88 +429,111 @@ body {
   }
 }
 
-/* Modal */
+/* Helper */
+.hidden {
+  display: none !important;
+}
 
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  z-index: 1000;
-  display: flex;
+/* Intro Screen */
+
+.intro-card {
+  max-width: 520px; /* Slightly narrower for reading */
   align-items: center;
-  justify-content: center;
-  padding: 16px;
-  animation: fade-in var(--transition-med);
-}
-
-.modal-card {
-  width: 100%;
-  max-width: 360px;
-  background: #ffffff;
-  border-radius: var(--border-radius-card);
-  box-shadow: var(--shadow-soft);
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  animation: slide-up var(--transition-med);
-}
-
-.modal-title {
-  margin: 0;
-  font-size: 1.4rem;
-  font-weight: 600;
   text-align: center;
-  color: var(--text-main);
+}
+
+.intro-header {
   margin-bottom: 8px;
 }
 
-.input-group {
+.intro-text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  max-width: 90%;
+}
+
+.player-setup-grid {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.player-setup-col {
+  flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #edf2f7;
+}
+
+.setup-heading {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.color-picker-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 6px;
 }
 
-.input-label {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-muted);
+.color-swatch-wrapper {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
 }
 
-.modal-input {
+.color-input {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 12px 14px;
-  border: 2px solid #eef2f5;
-  border-radius: 12px;
-  font-family: inherit;
-  font-size: 0.95rem;
-  transition: border-color var(--transition-fast);
-  outline: none;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
 }
 
-.modal-input:focus {
-  border-color: var(--ocp-green);
+.color-swatch {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  box-shadow: var(--shadow-subtle);
+  border: 2px solid rgba(0,0,0,0.05);
+  transition: transform var(--transition-fast);
+}
+
+.color-swatch-wrapper:hover .color-swatch {
+  transform: scale(1.05);
+}
+
+.warning-msg {
+  color: #e53e3e;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  font-weight: 500;
+  background: #fff5f5;
+  padding: 8px 12px;
+  border-radius: 8px;
+  width: 100%;
 }
 
 .full-width {
   width: 100%;
   justify-content: center;
+  padding: 14px;
+  font-size: 1.05rem;
   margin-top: 8px;
-  padding: 12px;
-  font-size: 1rem;
 }
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.hidden {
-  display: none !important;
-}
+/* Modal - REMOVED (Legacy styles removed or kept for reference? Removing to keep clean) */
