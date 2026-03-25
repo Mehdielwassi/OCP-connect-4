@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>OCP Connect 4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Modern, clean font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand-mark">
+        <div class="brand-icon"></div>
+        <span class="brand-text">OCP Connect 4</span>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <section class="game-card">
+        <div class="game-header">
+          <div class="game-title-group">
+            <h1 class="game-title">Connect 4</h1>
+            <p class="game-subtitle">First to connect four discs in a row wins.</p>
+          </div>
+
+          <div class="status-panel">
+            <div id="turn-indicator" class="player-indicator player1">
+              <span class="indicator-dot"></span>
+              <span id="turn-text">Player 1's turn</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="board-wrapper">
+          <div id="hover-row" class="hover-row"></div>
+          <div id="board" class="board"></div>
+        </div>
+
+        <div class="game-footer">
+          <div class="controls">
+            <button id="restart-btn" class="btn primary">Restart game</button>
+          </div>
+          <div id="message" class="message">
+            Player 1 starts. Connect four in a row.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span class="footer-text">Inspired by Groupe OCP · Clean green theme</span>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
