@@ -10,7 +10,15 @@ const turnIndicatorEl = document.getElementById("turn-indicator");
 const turnTextEl = document.getElementById("turn-text");
 const messageEl = document.getElementById("message");
 
+// Modal elements
+const modalEl = document.getElementById("player-modal");
+const p1Input = document.getElementById("p1-name");
+const p2Input = document.getElementById("p2-name");
+const startBtn = document.getElementById("start-game-btn");
+
 // Game state
+let player1Name = "Player 1";
+let player2Name = "Player 2";
 let currentPlayer = 1; // 1 or 2
 let grid = [];
 let isGameOver = false;
@@ -84,7 +92,8 @@ function updateTurnIndicator() {
   }
   const cls = currentPlayer === 1 ? "player1" : "player2";
   turnIndicatorEl.classList.add(cls);
-  turnTextEl.textContent = `Player ${currentPlayer}'s turn`;
+  const name = currentPlayer === 1 ? player1Name : player2Name;
+  turnTextEl.textContent = `${name}'s turn`;
 }
 
 function setMessage(text) {
@@ -116,7 +125,7 @@ function resetGame() {
   clearBoardUI();
   resetHover();
   updateTurnIndicator();
-  setMessage("Player 1 starts. Connect four in a row.");
+  setMessage(`${player1Name} starts. Connect four in a row.`);
 }
 
 // --- Win detection ---
@@ -273,13 +282,15 @@ function handleColumnClick(col) {
   if (winningCells) {
     isGameOver = true;
     applyWinningHighlight(winningCells);
-    setMessage(`Player ${currentPlayer} wins!`);
+    const winnerName = currentPlayer === 1 ? player1Name : player2Name;
+    setMessage(`${winnerName} wins!`);
     playTone(720, 260, 0.25);
     playTone(880, 260, 0.2);
-    turnTextEl.textContent = `Player ${currentPlayer} wins!`;
+    turnTextEl.textContent = `${winnerName} wins!`;
     updateTurnIndicator();
     disableAllCells();
     resetHover();
+    triggerConfetti(winningCells, currentPlayer);
     return;
   }
 
@@ -296,7 +307,8 @@ function handleColumnClick(col) {
   // Switch player
   currentPlayer = currentPlayer === 1 ? 2 : 1;
   updateTurnIndicator();
-  setMessage(`Player ${currentPlayer}'s turn.`);
+  const nextName = currentPlayer === 1 ? player1Name : player2Name;
+  setMessage(`${nextName}'s turn.`);
   // Update hover preview for new player on same column
   setHoverColumn(numericCol);
 }
@@ -333,6 +345,52 @@ function setupEvents() {
   restartBtn.addEventListener("click", () => {
     resetGame();
   });
+
+  // Start game button
+  startBtn.addEventListener("click", () => {
+    const p1 = p1Input.value.trim();
+    const p2 = p2Input.value.trim();
+    if (p1) player1Name = p1;
+    if (p2) player2Name = p2;
+    modalEl.classList.add("hidden");
+    resetGame();
+  });
+}
+
+// --- Confetti ---
+
+function triggerConfetti(winningCells, player) {
+  if (!window.confetti) return;
+
+  const colors = player === 1 
+    ? ["#008f4c", "#00b894", "#a6f4c5"] 
+    : ["#00b894", "#00c2a8", "#e5fffb"];
+
+  // Calculate average position of winning cells
+  let totalX = 0;
+  let totalY = 0;
+  winningCells.forEach(([r, c]) => {
+    const cell = cellEls[r][c];
+    const rect = cell.getBoundingClientRect();
+    totalX += rect.left + rect.width / 2;
+    totalY += rect.top + rect.height / 2;
+  });
+  
+  const avgX = totalX / winningCells.length;
+  const avgY = totalY / winningCells.length;
+
+  // Convert to 0-1 range relative to viewport
+  const originX = avgX / window.innerWidth;
+  const originY = avgY / window.innerHeight;
+
+  confetti({
+    particleCount: 150,
+    spread: 80,
+    origin: { x: originX, y: originY },
+    colors: colors,
+    disableForReducedMotion: true,
+    zIndex: 2000,
+  });
 }
 
 // --- Boot ---
@@ -340,5 +398,6 @@ function setupEvents() {
 createHoverRow();
 createBoard();
 setupEvents();
-resetGame();
+// resetGame(); // Called by start button now, but we'll leave initial state behind modal
+resetGame(); 
 updateTurnIndicator();

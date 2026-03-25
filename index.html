@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 </head>
 <body>
   <div class="app-shell">
@@ -54,6 +55,22 @@
     <footer class="app-footer">
       <span class="footer-text">Inspired by Groupe OCP · Clean green theme</span>
     </footer>
+  </div>
+
+  <!-- Player Name Modal -->
+  <div id="player-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h2 class="modal-title">Enter Player Names</h2>
+      <div class="input-group">
+        <label for="p1-name" class="input-label">Player 1 (Green)</label>
+        <input type="text" id="p1-name" class="modal-input" placeholder="Player 1" />
+      </div>
+      <div class="input-group">
+        <label for="p2-name" class="input-label">Player 2 (Teal)</label>
+        <input type="text" id="p2-name" class="modal-input" placeholder="Player 2" />
+      </div>
+      <button id="start-game-btn" class="btn primary full-width">Start Game</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
